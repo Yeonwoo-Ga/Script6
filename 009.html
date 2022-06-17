@@ -8,17 +8,11 @@
 </head>
 <body>
     <script>
-
-        
-        const obj = {
-            irum : '홍길동',
-            kor : 75,
-            eng : 80,
-            print (){
-                console.log(this.kor + this.eng);
-            }
-        }
-        obj.print();
+        let a;
+        console.log(a===undifined); //true false
+        console.log(a===null);      //true false
+        console.log(a===NaN);       //flase 비교불가
+        console.log(isNaN(a));      //비교하려면 isNaN사용해야함.
     </script>
 </body>
 </html>

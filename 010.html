@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>비동기 작업</title>
+    <script>
+        function a() {console.log('a')}
+        function b() {console.log('b')}
+        function c() {console.log('c')}
+        function sync() {
+            //함수는 하나씩 순서대로 실행 -> 동기(synchronous)
+            a();
+            b();
+            c();
+        }
+        function async () {
+            $.ajax('http://sample.bmaster.kro.kr/contacts?pageno=2').done(function() {a(); b(); c();});
+            b();
+            c();
+        }
+        
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
