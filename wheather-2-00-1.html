@@ -38,7 +38,7 @@
         const maxtemp = weatherResult.daily[0].temp.max;
         const mintemp = weatherResult.daily[0].temp.min;
         const uvi = weatherResult.current.uvi;
-        console.log(weatherResult);
+        
 
 
         for(let i=1; i<=7; i++){
@@ -59,7 +59,7 @@
             const airp = await $.ajax(url);
             const pm10 = airp.list[0].components.pm10
             const pm2_5 = airp.list[0].components.pm2_5
-            console.log(airp.list[0].components.pm10,airp.list[0].components.pm2_5)
+      
 
             airpollution = {pm10, pm2_5};
         }
@@ -79,7 +79,6 @@
             await geoPosition();
             await getWeather();
             await getAir();
-            console.log(weather);
             const total = {weather, airpollution, position, forecast}
             console.log(total);
 
