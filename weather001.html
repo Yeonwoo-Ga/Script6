@@ -13,6 +13,13 @@
             {name : '부산', code : 'Busan'},{name : '대구', code : 'Deagu'}
         ]
 
+        async function getData(cities){
+            
+
+
+        }
+
+
 
 
        async function getPosition(city, limit, key, positionUrl){
@@ -51,7 +58,7 @@
 
         async function init(){
             const $buttons = $("#buttons")
-            for(let i=0; i<=3; i++){
+            for(let i=0; i<cities.length; i++){
                $("<button>").attr('data-cno',i).text(cities[i].name).appendTo($buttons);
 
             }
@@ -59,19 +66,23 @@
         }
         
 
+        async function getDate(){
 
+            const date = new Date()
+        }
  
 
 
 
         $(document).ready(async function(){
+            let cno = 0;
             await init();
             const positionUrl = `http://api.openweathermap.org/geo/1.0/direct`;
             const weahterUrl = `https://api.openweathermap.org/data/2.5/onecall`;
             const airUrl = `http://api.openweathermap.org/data/2.5/air_pollution`;
             const key = '406dc11d9f87f27eb0b382002a923df0';
             const limit = 1;
-            const city = 'Incheon'
+            let city = cities[cno].code;
             const position = await getPosition(city, limit, key, positionUrl);
             const weather = await getWeather(position, key, weahterUrl);
             const air = await getAir(position, key, airUrl);
@@ -94,7 +105,10 @@
             }
 
             $("button").click(function(){
-                    cno = parseInt($(this).attr('data-cno'));
+                   let $cno = parseInt($(this).attr('data-cno'));
+                
+         
+                  
 
                     
 
@@ -110,7 +124,7 @@
     <div id="weather">
         <div><h1>weather app</h1></div>
            <div id="buttons">
-        </div>
+</div>
     </div>
     <div id="info">
         
