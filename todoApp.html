@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <title>1. 할 일 정의</title>
+  <script>
+ const printTodos=(todos)=>{
+      const $ul = $("#todos");
+      $ul.empty();
+      todos.forEach((todo, index) => {
+        const $li = $("<li>").attr("class", "todo").attr("data-index", index).appendTo($ul);
+        if(todo.done==true) {
+          $("<span class='title'>").text(todo.title + " (완료)").addClass("done").appendTo($li);
+        } else {
+          $("<span class='title'>").text(todo.title).appendTo($li);
+        }
+        $("<span>").attr("class", "close").text("X").appendTo($li);
+      });
+    }
+
+    const addTodo=(todos)=>{
+        todos.push({title : $('#input').val(), done:false})
+        printTodos(todos);
+    }
+
+    $(document).ready(()=> {
+        //const 참조변수는 A객체를 가리키다 B객체를 가리키게 변경할 수 없다.
+      const todos = [
+        { title : "영화보기", done:false },
+        { title : "주말 산책", done:true },
+        { title : "ES6 학습", done:false },
+        { title : "잠실 야구장", done:false }
+      ];
+
+      printTodos(todos);
+
+      
+      $("#input").keyup(function(e){
+        if(e.keyCode===13)
+        console.log('1111')
+        addTodo(todos);
+       
+      })
+
+      $("#add").click(function(){
+        if(e.keyCode===13)
+        console.log('2222')
+        addTodo(todos);
+      })
+
+      $('.title').click(function(){
+        console.log('33333')
+        addTodo(todos);
+      })
+
+      $('.close').click(function(){
+        console.log('44444')
+        addTodo(todos);
+      })
+    });
+
+  </script>
+</head>
+<body>
+  <div id="app">
+    <input type="text" id="input" placeholder="입력 후 엔터!">
+    <button id="add">추가</button>
+    <ul id="todos">
+    </ul>
+  </div>
+</body>
+</html>
