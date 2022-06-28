@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>To do list 3번째</title>
+    <style>
+        body{
+            height: 100vh;
+
+        }
+
+        #app{
+            width:600px;
+            margin:0 auto;
+            border : 3px solid black;
+            border-radius: 5px;
+            background-color: bisque;
+        }
+
+        #input{
+            width:400px;
+        }
+
+        .done{
+            text-decoration: line-through;
+        }
+
+        .title{
+            display:inline-block;
+            width:400px;
+        }
+    </style>
+
+    <script>
+        
+        const addTodo = (todos) => {
+            
+            todos.push({title : $("input").val(), done : false});
+            printTodos(todos);
+        }
+        
+        
+        const todos = [{title : '오늘의 할일을 적어보세요', done : false}];
+
+        const printTodos = (todos) =>{
+            const $ul = $("#todos");
+
+            $ul.empty();
+            
+            
+            todos.forEach((todo,index) => {
+                console.log(todo);
+                console.log(todo.done);
+                if(todo.done==true) {
+                    console.log('aaaa')
+                }
+                else {
+                    console.log('nbbbn');
+                }
+                const $li = $("<li>").attr('data-index',index).attr('class','todo').appendTo($ul);
+                    if(todo.done == true){
+                        $("<span>").text(todo.title + "(완료)").attr('class','title').addClass('done').attr('data-index',index).appendTo($li);
+                    } else{
+                        $("<span>").text(todo.title).attr('class','title').attr('data-index',index).appendTo($li);
+                    }
+                    $("<span>").text("X").attr('class','close').attr('data-index',index).appendTo($li);
+
+            });
+
+        }
+
+        $(document).ready(function(){
+
+
+            printTodos(todos);
+
+            $("#input").keyup(function(e){
+                if(e.keyCode===13){
+                addTodo(todos);
+            }
+            })
+
+            $("#add").click(function(){
+                addTodo(todos);
+            })
+
+          $("#todos").on('click','.title',function(){
+                console.log(todos);
+                todos[$(this).attr('data-index')].done = !todos[$(this).attr('data-index')].done;
+                printTodos(todos);  
+
+            })
+
+            $("#todos").on('click','.close',function(){
+                todos.splice($(this).attr('data-index'),1)
+                printTodos(todos);  
+            })
+            })
+        
+    </script>
+</head>
+<body>
+    
+    <div id="app">
+        <input type="text" id="input" placeholder="할일 적기" required>
+        <button id="add">추가</button>
+        <ul id="todos">
+
+        </ul>
+
+    </div>
+</body>
+</html>

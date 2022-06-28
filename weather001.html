@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+    <script>
+        
+        const cities = [
+            {name : '서울', code : 'Seoul'},{name : '인천', code : 'Incheon'},
+            {name : '부산', code : 'Busan'},{name : '대구', code : 'Deagu'}
+        ]
+
+        async function getData(cities){
+            
+
+
+        }
+
+
+
+
+       async function getPosition(city, limit, key, positionUrl){
+            const result = await $.ajax({
+                url : positionUrl,
+                data : {q : city, limit : limit , appid : key},
+                method : 'get',
+                processData : true
+            })
+            
+            return {위도 : result[0].lat, 경도 : result[0].lon}
+
+        }
+
+        async function getWeather(position, key, weahterUrl, metric){
+                const {위도, 경도} = position;
+                const result = await $.ajax({
+                    url : weahterUrl,
+                    data : {lat : 위도, lon : 경도 , appid : key, units: 'metric'}
+                })
+                console.log(result);
+                return result;
+                
+
+        }
+
+        async function getAir(position, key, airUrl){
+            const {위도, 경도} = position;
+                const result = await $.ajax({
+                    url : airUrl,
+                    data : {lat : position.위도, lon : position.경도, appid : key}
+                })
+                console.log(result);
+                return result;
+        }
+
+        async function init(){
+            const $buttons = $("#buttons")
+            for(let i=0; i<cities.length; i++){
+               $("<button>").attr('data-cno',i).text(cities[i].name).appendTo($buttons);
+
+            }
+
+        }
+        
+
+        async function getDate(){
+
+            const date = new Date()
+        }
+ 
+
+
+
+        $(document).ready(async function(){
+            let cno = 0;
+            await init();
+            const positionUrl = `http://api.openweathermap.org/geo/1.0/direct`;
+            const weahterUrl = `https://api.openweathermap.org/data/2.5/onecall`;
+            const airUrl = `http://api.openweathermap.org/data/2.5/air_pollution`;
+            const key = '406dc11d9f87f27eb0b382002a923df0';
+            const limit = 1;
+            let city = cities[cno].code;
+            const position = await getPosition(city, limit, key, positionUrl);
+            const weather = await getWeather(position, key, weahterUrl);
+            const air = await getAir(position, key, airUrl);
+         
+            
+            const 위도 = position.위도;
+            const 경도 = position.경도;
+            const 상태 = weather.daily[0].weather[0].description;
+            const 최대온도 = weather.daily[0].temp.max;
+            const 최저온도 = weather.daily[0].temp.min;
+            const 습도 = weather.daily[0].humidity + "%";
+            const 미세먼지 = air.list[0].components.pm10;
+            const 초미세먼지 = air.list[0].components.pm2_5;
+            const 날씨 = {위도, 경도, 상태, 최대온도, 최저온도, 습도, 미세먼지, 초미세먼지,}
+            console.log(날씨);
+
+            for(let i=1; i<=7; i++){
+                const forecast =  weather.daily[i].weather[0].description
+                console.log("날씨 : " + forecast);
+            }
+
+            $("button").click(function(){
+                   let $cno = parseInt($(this).attr('data-cno'));
+                
+         
+                  
+
+                    
+
+            })
+            
+
+            
+          
+        })
+    </script>
+</head>
+<body>
+    <div id="weather">
+        <div><h1>weather app</h1></div>
+           <div id="buttons">
+</div>
+    </div>
+    <div id="info">
+        
+    </div>
+
+</body>
+</html>

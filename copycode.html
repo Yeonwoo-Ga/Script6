@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>두번째 샘플</title>
+
+    <script>
+
+        const cities = [
+            {name : '인천', code : 'Incheon'},{name : '서울', code : 'Seoul'},
+            {name : '대구', code : 'Daegu'},{name : '부산', code : 'Busan'}
+        ]
+
+        async function getWeather(b,key,weahterUrl){
+            const result = await $.ajax({
+                url : weahterUrl,
+                data : {lat : b.위도 , lon : b.경도, appid : key}
+            })
+          
+
+            return result
+        }
+
+        async function getPosition(cities, cno, key, positionUrl){
+            const params = {
+                q : cities[cno].code,
+                appid : key
+            }
+            const result = await $.ajax({
+                url : positionUrl,
+                data : params
+
+            })
+            
+          
+            const position = {위도 : result[0].lat, 경도 : result[0].lon};
+ 
+
+            return position
+        }
+
+
+        async function init(cities){
+            const $buttons = ("#buttons");
+            cities.forEach((city,i) => {
+                $("<button>").text(city.name).attr('data-cno',i).appendTo($buttons);
+            });
+        }
+
+        $(document).ready(async function(){
+
+            let cno = 0;
+            const key = '406dc11d9f87f27eb0b382002a923df0';
+            const positionUrl = `http://api.openweathermap.org/geo/1.0/direct`;
+            const weahterUrl = `https://api.openweathermap.org/data/2.5/onecall`;
+
+            await init(cities);
+           
+            const position = await getPosition(cities, cno, key, positionUrl);
+            await getWeather(position,key,weahterUrl);
+
+            ($("button")).click(async function(){
+
+                cno = parseInt($(this).attr('data-cno'));
+
+               
+                let b = await getPosition(cities, cno, key, positionUrl);
+
+                console.log(b);
+
+                let a= await getWeather(b,key,weahterUrl);
+
+                console.log(a);
+            })
+
+            
+        })
+    </script>
+</head>
+<body>
+    <div id="app">
+        <div id="weather"></div>
+        <div id="buttons"></div>
+    </div>
+</body>
+</html>
